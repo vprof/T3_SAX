@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<address>
+    <city size="big">
+        Kyiv
+        <street>
+            Shevchenka
+            <house>10</house>
+        </street>
+    </city>
+</address>

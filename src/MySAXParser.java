@@ -1,36 +1,32 @@
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
-
+import org.xml.sax.*;
+import org.xml.sax.helpers.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SAXParser extends  DefaultHandler {
+public class MySAXParser extends DefaultHandler {
+
     private City city;
     private Street street;
-    private Building building;
+    private House house;
     private String currentElement;
 
     @Override
-    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+    public void startElement(String uri, String localName, String qName, Attributes attributes) {
         if (qName.equalsIgnoreCase("city")) {
             String size = attributes.getValue("size");
-            String name = qName;
-            city = new City(name,size);
+            city = new City(qName,size);
             currentElement = "city";
         } else if (qName.equalsIgnoreCase("street")) {
-            String name = attributes.getValue("name");
-            street = new Street(name);
+            street = new Street(qName);
             currentElement = "street";
-        } else if (qName.equalsIgnoreCase("building")) {
-            String number = attributes.getValue("number");
-            building = new Building(Integer.parseInt(number));
-            currentElement = "building";
+        } else if (qName.equalsIgnoreCase("house")) {
+            house = new House(0);
+            currentElement = "house";
         }
     }
 
     @Override
-    public void characters(char[] ch, int start, int length) throws SAXException {
+    public void characters(char[] ch, int start, int length) {
         String value = new String(ch, start, length).trim();
         if (value.length() == 0) {
             return;
@@ -42,26 +38,26 @@ public class SAXParser extends  DefaultHandler {
             case "street":
                 street.setName(value);
                 break;
-            case "building":
-                building.setNumber(Integer.parseInt(value));
+            case "house":
+                house.setNumber(Integer.parseInt(value));
                 break;
         }
     }
 
     @Override
-    public void endElement(String uri, String localName, String qName) throws SAXException {
+    public void endElement(String uri, String localName, String qName) {
         if (qName.equalsIgnoreCase("city")) {
             currentElement = "";
         } else if (qName.equalsIgnoreCase("street")) {
             city.addStreet(street);
             currentElement = "city";
-        } else if (qName.equalsIgnoreCase("building")) {
-            street.addHouse(building);
+        } else if (qName.equalsIgnoreCase("house")) {
+            street.addHouse(house);
             currentElement = "street";
         }
     }
 
-    private static class City {
+    public static class City {
         private String name;
         private String size;
         private List<Street> streets = new ArrayList<>();
@@ -85,9 +81,9 @@ public class SAXParser extends  DefaultHandler {
         }
     }
 
-    private static class Street {
+    public static class Street {
         private String name;
-        private List<Building> houses = new ArrayList<>();
+        private List<House> houses = new ArrayList<>();
 
         public Street(String name) {
             this.name = name;
@@ -97,7 +93,7 @@ public class SAXParser extends  DefaultHandler {
             this.name = name;
         }
 
-        public void addHouse(Building house) {
+        public void addHouse(House house) {
             houses.add(house);
         }
 
@@ -107,10 +103,10 @@ public class SAXParser extends  DefaultHandler {
         }
     }
 
-    private static class Building {
+    public static class House {
         private int number;
 
-        public Building(int number) {
+        public House(int number) {
             this.number = number;
         }
 

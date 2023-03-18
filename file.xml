@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<address>
+<city size="big">
+	Kiev
+	<street>
+		Holosiivska
+		<house>
+			12
+		</house>
+	</street>
+</city>
+<city size="small">
+	Uzhgorod
+	<street>
+		Kapushnska
+		<house>
+			23
+		</house>
+	</street>
+</city>
+</address>
